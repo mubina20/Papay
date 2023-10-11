@@ -45,7 +45,7 @@ mongodb.connect(connectionString, {
         const server = http.createServer(app);
 
         // serverni ma'lum bir PORTga listen qildirish
-        let PORT = 3000;
+        let PORT = process.env.PORT || 3000;
         server.listen(PORT, function() { // server muvaffaqiyatli amalga oshsa, function ishga tushadi
             console.log(`server portda muvaffaqiyatli, ${PORT} portda ishlamoqda, http://localhost:${PORT}`);
         });
