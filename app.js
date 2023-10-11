@@ -8,6 +8,8 @@ const exp = require('express');
 // endi appda foydalanib Express web server quramiz
 const app = exp();
 
+const router = require('./router');
+
 // MongoDBni chaqiramiz
 // .db() -- MongoDBni objecti
 // biz shu orqali DataBasega turli hil ma'lumotlarni yozish, o'chirish, o'qish yoki delete qilish operatsiyalarini amalga oshiramiz
@@ -48,5 +50,7 @@ app.set("view engine", "ejs");
 
 
 // 4) Routing code
+// har kelgan requestlarni - router.jsga yubor
+app.use("/", router);
 
 module.exports = app;
