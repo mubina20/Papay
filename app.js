@@ -10,13 +10,6 @@ const app = exp();
 
 const router = require('./router');
 
-// MongoDBni chaqiramiz
-// .db() -- MongoDBni objecti
-// biz shu orqali DataBasega turli hil ma'lumotlarni yozish, o'chirish, o'qish yoki delete qilish operatsiyalarini amalga oshiramiz
-const db = require('./server').db();
-// mongodbni pasta kerak edi, shuning uchun require qildik
-const mongodb = require('mongodb');
-
 // 1) Kirish code  
 // bu bosqichda - Expressga kirib kelayotgan ma'lumotlarga bog'liq bo'lgan codelar yozidali
 
@@ -50,7 +43,8 @@ app.set("view engine", "ejs");
 
 
 // 4) Routing code
-// har kelgan requestlarni - router.jsga yubor
+// har qanday 'epress'ga kelgan requestlar - 'router.js'ga borsin
 app.use("/", router);
 
+// appni export qilamiz
 module.exports = app;
