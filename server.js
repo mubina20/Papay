@@ -40,7 +40,7 @@ mongoose.connect(
         console.log('MongoDB muvaffaqiyatli ulandi');
 
         // mongooseni connectionining instancesini olib beradi
-        console.log(goose);
+        // console.log(goose);
 
         // app ham, databaseimiz muvaffaqiyatli ulangash require qilinsin
         const app = require('./app'); // express app, ya'ni app.js boshlandi
