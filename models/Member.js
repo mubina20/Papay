@@ -43,7 +43,7 @@ class Member {
         }
     }    
 
-    async loginData(input) {
+    async loginData(input) { // loginda compare algorithmni ishlatamiz
         try{
             const member = await this.memberModel
             .findOne(
