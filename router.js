@@ -7,24 +7,23 @@ const express = require('express');
 const router = express.Router();
 const memberController = require("./cotrollers/memberController");
 
+// 
+/**************************************************************************************
+ *             REST API(REACT uchun kerak bo'lgan router hisoblanadi)                 *
+ **************************************************************************************/
+
 // hamda bu router orqali turli hil routerlarni shakllantiramiz
-
-// localhost:3000ga kirib kelgan requestimiz
-// manashu URLga kelgan requestlar - tegishli 'Controller'ga beriladi
-
-//-----------------------------------------------------------------------------
-
 // 'MEMBER'ga dahldor routerlar
 // shartli ravishda - 'member'larga dahldor router deb qabul qilib olamiz
 
 // localhost:3000ga kirsak - 'Home Sahifadasiz' deb chiqadi
 router.get("/", (req, res) => {
-    memberController.home
+    memberController.home();
 });
 router.post("/signup",  memberController.signup);
-router.post("/login",memberController.login);
+router.post("/login", memberController.login);
 router.get("/logout", (req, res) => {
-    memberController.logout
+    memberController.logout();
 });
 
 

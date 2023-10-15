@@ -9,13 +9,14 @@ const exp = require('express');
 const app = exp();
 
 const router = require('./router');
+const router_bssr = require('./router_bssr');
 
-let session = require('express-session');
-const MongoDBStore = require('connect-mongodb-session')(session);
-const store = new MongoDBStore({
-    uri: process.env.MONGO_URL,
-    collection: "session"
-});
+// let session = require('express-session');
+// const MongoDBStore = require('connect-mongodb-session')(session);
+// const store = new MongoDBStore({
+//     uri: process.env.MONGO_URL,
+//     collection: "session"
+// });
 
 // 1) Kirish code  
 // bu bosqichda - Expressga kirib kelayotgan ma'lumotlarga bog'liq bo'lgan codelar yozidali
@@ -35,17 +36,17 @@ app.use(exp.urlencoded({ extended: true }));
 
 
 // 2) Session code
-app.use(
-    session({
-        secret: process.env.SESSION_SECRET,
-        cookie: {
-            maxAge: 1000 * 60 * 30,
-        },
-        store: store,
-        resave: true,
-        saveUninitialized: true
-    })
-);
+// app.use(
+//     session({
+//         secret: process.env.SESSION_SECRET,
+//         cookie: {
+//             maxAge: 1000 * 60 * 30,
+//         },
+//         store: store,
+//         resave: true,
+//         saveUninitialized: true
+//     })
+// );
 
 // 3) Views code    (Express uchun BSSRda folder yasaymiz)
 
@@ -62,10 +63,9 @@ app.set("view engine", "ejs");
 // har qanday 'epress'ga kelgan requestlar - 'router.js'ga borsin
 
 // agar '/resto' bilan boshlansa - shu routerga yuboriladi
-// app.use("/resto", router_bssr); // ( Traditional). '/resto' FrontEnd applicationimiz - faqatgina ADMIN va RESTARANT userlar uchun kerakli bo'lgan loyiha/narsa (BackEnddagi FrontEnd)
+app.use("/resto", router_bssr); // ( Traditional). '/resto' FrontEnd applicationimiz - faqatgina ADMIN va RESTARANT userlar uchun kerakli bo'lgan loyiha/narsa (BackEnddagi FrontEnd)
 
 // agar '/resto' bilan boshlanmasa - qolganini hozirgacha yasagan routerimizga yuboradi
-// 
 app.use("/", router); // (react uchun ishlatamiz). Bu loyihamiz esa - haridorlar uchun kerakli bo'lgan FrontEnd loyihasidir (FrontEnd)
 
 // appni export qilamiz
