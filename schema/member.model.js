@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { member_status_enums, member_type_enums } = require("../lib/config");
+const { member_status_enums, member_type_enums, ordernary_enums} = require("../lib/config");
 
 // memberSchema Model orqali - MongoDB - ma'lumotlarni DataBasega yoza boshlaydi 
 // agar DataBasemiz bo'lmasa - MongoDB -- 자동으로 magrition qiladi, ya'ni 'collection' ochib beradi  
@@ -25,7 +25,7 @@ const memberSchema = new mongoose.Schema({
     mb_password: {
         type: String,
         required: true,
-        // passwordni keyinchalik request qilyatgan payti bizga DataBase by default holatda qaytarmasligi uchun:
+        // talab qilinganda ber
         select: false
     },
     mb_type: {
@@ -46,7 +46,7 @@ const memberSchema = new mongoose.Schema({
         required: false,
         default: "ACTIVE", 
         enum: {
-            values: member_status_enums,
+            values: member_status_enums, // ["ONPAUSE", "ACTIVE", "DELETED"]
             // agar manashulardan boshqa qiymatlar kelsa - bizning DataBasemizga DATA yozilmaydi ya'ni fail bo'ladi, xatolik yuzaga keladi
             message: "{VALUES} ruxsat etilgan qiymatlar qatoriga kirmaydi"
             // keyin biz bu xatolikni - catch qilib, bu xatolikni response qilib yuboramiz
@@ -76,7 +76,7 @@ const memberSchema = new mongoose.Schema({
         required: false,
         default: 'N',
         enum: {
-            values: ordernary_enums,
+            values: ordernary_enums, // ["Y", "N"]
             message: "{VALUES} ruxsat etilgan qiymatlar qatoriga kirmaydi"
         }
     },
@@ -107,8 +107,10 @@ const memberSchema = new mongoose.Schema({
 
     // MongoDB - 자동으로 ikki hil qiymatni qo'yib beradi 
     // bular - 'createdAt', va 'updatedAt'
-     timestamps: true 
-});
+    
+}, 
+    {timestamps: true}
+);
 
 
 // endi Modelni shakllantirib olamiz
