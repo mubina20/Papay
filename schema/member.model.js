@@ -3,6 +3,8 @@ const { member_status_enums, member_type_enums, ordernary_enums} = require("../l
 
 // memberSchema Model orqali - MongoDB - ma'lumotlarni DataBasega yoza boshlaydi 
 // agar DataBasemiz bo'lmasa - MongoDB -- 자동으로 magrition qiladi, ya'ni 'collection' ochib beradi  
+
+// Code first || Schema first method
 const memberSchema = new mongoose.Schema({
     // bizga 'member' bo'yicha nima kerak bo'ladi?
     /*
@@ -15,12 +17,12 @@ const memberSchema = new mongoose.Schema({
     mb_nick: {
         type: String,
         required: true, // talab qilinishi hardoim bo'lishi kerak
-        // shuni yozsak - agar mb_nick DataBasemizda ishlatilgan bo'lsa  - DataBasemiz - duplicated(takrorlangan) degan xatolikni yuboradi va DataBasega yozmaydi
-        index: {unique: true, sparce: true}
+        index: {unique: true, sparse: true} // shuni yozsak - agar mb_nick DataBasemizda ishlatilgan bo'lsa  - DataBasemiz - duplicated(takrorlangan) degan xatolikni yuboradi va DataBasega yozmaydi
     },
     mb_phone: {
         type: String,
-        required: true
+        required: true,
+        index: {unique: true, sparse: true}
     }, 
     mb_password: {
         type: String,
@@ -70,7 +72,7 @@ const memberSchema = new mongoose.Schema({
         required: false,
         default: 0
     },
-    // Restarantlar kerlama uchun pul bersa - uni 'top Restarant'larga chiqaramiz 
+    // Restarantlar reklama uchun pul bersa - uni 'top Restarant'larga chiqaramiz 
     mb_top: {
         type: String,
         required: false,

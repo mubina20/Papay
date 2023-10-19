@@ -1,58 +1,49 @@
-// 
-const dotenv = require('dotenv');
-dotenv.config();
+/* 
+server.jsda 2ta ish qilamiz:
+1) MondoDBni ulaymiz
+2) MongoDB muvaffaqiyatli ulansa - Serverni ishga tushiramiz
+*/
+
+const dotenv = require('dotenv'); // External package
+dotenv.config(); // .env fileni kalitlarini yuklab oladi (PORT, MONGO_URLlarni)
 
 const http = require('http'); // core package
-
-// MongoDB Connect (MongoDBni shu yerda ulaymiz)
-// birinchi MongoDBni ulab, keyin serverni ishga tushirsak yaxshi bo'ladi
-
-// mongoose external packageni install qilamiz, va chaqirib olamiz
-const mongoose = require("mongoose");
+// Serverni yasash, so'rov qabul qilish, portni eshitish ishlarini qiladi
 
 
-// mongoDB compassdan --> mongo_atlas 'connection string'ni copy qilib, 
-// 'connectionString'ga tenglab olamiz
-// mongoDBni collection stringini olib keladi
-const connectionString = process.env.MONGO_URL;
+const mongoose = require("mongoose"); // mongoose external packageni install qilamiz, va chaqirib olamiz
 
+const connectionString = process.env.MONGO_URL; // .env filedagi MONGO_URL ya'ni connection string
 
-// mongoDBni documentationida 'connect' degan method bor, ichiga 3ta narsani pass qilishimiz kerak:
-    // 1) connection String
-    // 2) {userNewUrlParser: true, useUnifiedTopoligy: true}
-    // 3) callback
-
-mongoose.connect(
-    connectionString, 
+// 1) MongoDB ulanadi
+mongoose.connect( // connect() - 3ta parameter qabul qiladi:
+    connectionString, // 1) MongoDB Serveri bilan ulanish uchun kerakli bog'lanish URLini o'z ichiga oladi
     {
     useNewUrlParser: true, 
+    // 2) shu ikovi - MondoDBning yangi versiyalari uchun kerakli bo'lib, ular 변수larni ishlatishni ta'minlaydi
     useUnifiedTopology: true,
     }, 
-    (err, goose) => { // ikkinchi parameterga data yoki client deb yozvolamiz 
-    // biz MongoDBga ulanganimizda - Error mavjud bo'lmasa MongoDBning clientini, instanceni bizga pass qiladi
+    (err, goose) => { // 3) callback
 
-    // agar ulanishimiz muvaffaqiyatsiz bo'lsa - console.log 'error' bersin
-    if(err) console.log('ERROR: MongoDBga ulanish muvaffaqiyatsiz boldi!'); 
+    if(err) console.log('ERROR: MongoDBga ulanish muvaffaqiyatsiz boldi!'); // agar MongoDBni ulanishi muvaffaqiyatsiz bo'lsa - ERROR chiqsin
     
-    // ask holda, ya'ni ulanishimiz muvaffaqiyatli bo'lsa, error bo'lmasa, bu holda serverimizni boshlaymiz
-    else{ 
-        // DataBasemiz muvaffaqiyatli ulangani uchun serverni boshlayapmiz
-        console.log('MongoDB muvaffaqiyatli ulandi');
+    else{ // ask holda, ya'ni ulanishi muvaffaqiyatli bo'lsa,
 
-        // mongooseni connectionining instancesini olib beradi
-        // console.log(goose);
+        // DataBasemiz muvaffaqiyatli ulangani uchun Expressni qurishni boshladi
 
-        // app ham, databaseimiz muvaffaqiyatli ulangash require qilinsin
-        const app = require('./app'); // express app, ya'ni app.js boshlandi
-
+        console.log('MongoDB muvaffaqiyatli ulandi'); // muvaffaqiyatli ulanganini log qilsin
         
-        // createServer() --> method - bitta parameter qabul qiladi
-        const server = http.createServer(app);
+        // 2) Server ishga tushadi
+        const app = require('./app'); // app ham, databaseimiz muvaffaqiyatli ulangach require qilinsin
 
-        // serverni ma'lum bir PORTga listen qildirish
-        // process.env - o'zini PORTini tekshirsin, agar PORTda ma'lumot bo'lsa o'sha ma'lumotni saqlasin, 
-        // agar ma'lumot bo'lmasa unda 3000ni qo'ysin
-        let PORT = process.env.PORT || 3000;
+        const server = http.createServer(app); // 'app.js'dagi hamma ishlarni shu yerga olib kelib - Serverni yasayapmiz.    Hamma requestlar shu yerga keladi
+        // createServer() --> method - bitta parameter qabul qiladi
+
+        // serverni ma'lum bir PORTga listen qildirishimiz kerak
+        let PORT = process.env.PORT || 3000; // process.env - o'zini PORTini tekshirsin:
+        // agar PORTda ma'lumot bo'lsa - o'sha ma'lumotni saqlasin, 
+        // agar ma'lumot bo'lmasa - unda 3000ni qo'ysin
+
         server.listen(PORT, function() { // server muvaffaqiyatli amalga oshsa, function ishga tushadi
             console.log(`server portda muvaffaqiyatli, ${PORT} portda ishlamoqda, http://localhost:${PORT}`);
         });

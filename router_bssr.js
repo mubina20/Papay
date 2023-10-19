@@ -8,26 +8,21 @@ const router_bssr = express.Router();
 const restaurantController = require("./cotrollers/restaurantController");
 
 /**************************************************************************************
- *                 BSSR(EJS uchun kerak bo'lgan router hisoblanadi)                   *
+ *                      BSSR(EJS uchun kerak bo'lgan router)                          *
  **************************************************************************************/
-
 
 // Bu yerda - RESTAURANT Controller bo'ladi, bu ham SERVICE MODELni ishlatadi ya'ni 'MEMBER'ni
 
-router_bssr.get("/signup",  (req, res) => {
-    restaurantController.getSingupMyRestaurant();
-});
-router_bssr.post("/signup",  restaurantController.signupProcess);
+// SIGNUP
+router_bssr.get("/signup",restaurantController.getSingupMyRestaurant);
+router_bssr.post("/signup", restaurantController.signupProcess);
 
-router_bssr.get("/login", (req, res) => {
-    restaurantController.getLoginMyRestaurant();
-});
-router_bssr.post("/login",restaurantController.loginProcess);
+// LOGIN
+router_bssr.get("/login",restaurantController.getLoginMyRestaurant);
+router_bssr.post("/login", restaurantController.loginProcess);
 
-
-router_bssr.get("/logout", (req, res) => {
-    restaurantController.logout();
-});
+// LOGOUT
+router_bssr.get("/logout", restaurantController.logout);
 
 
 // hosil qilgan routerni export qiilb olamiz

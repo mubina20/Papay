@@ -1,15 +1,15 @@
-<!-- EJS - BackEndda FrontEndni qurishga yordam beradigon package -->
+<!-- Browserdan - 'localhost:3000/resto/signup'ga kirsak - shu 'signup.ejs'ning kodlar chiqadi -->
 
-    <!-- includes folderni ichidan - headni chaqirib olamiz -->
-    <%~ include('includes/header') %>
+<!-- <head> qismini chaqirib olamiz -->
+<%- include("includes/header") %>
+<!-- 
+    include - bu templating engine(ejs) ichidagi bir operatori.
+    U - ma'lumotlar yoki kodni bir fayldan boshqa bir faylga qo'shish uchun ishlatiladi. 
+-->
 
-
-    <!-- BODY -->
     <body>
         <h1>Signup page</h1>
-
     </body>
 
-    <!-- includes folderni ichidan - footerni chaqirib olamiz -->
-    <%~ include('includes/footer') %>
-
+<!-- footer qismini chaqirib olamiz -->
+<%- include('includes/footer') %>

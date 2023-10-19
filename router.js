@@ -1,43 +1,41 @@
 // router filemizni ichida esa - expressni require qilib olishimiz kerak!
 // va turli hil routerlarni shakllantiramiz 
 
-const express = require('express');
+const express = require('express'); // express frameworkni chaqirib olamiz
 
 // expressning ichidan Routerni olib chiqamiz
-const router = express.Router();
+const router = express.Router(); // Expressning Router() methodini - routerga tenglab olsak - router - object bo'ladi
 const memberController = require("./cotrollers/memberController");
 
-// 
-/**************************************************************************************
- *             REST API(REACT uchun kerak bo'lgan router hisoblanadi)                 *
- **************************************************************************************/
 
-// hamda bu router orqali turli hil routerlarni shakllantiramiz
+/**************************************************************************
+ *             REST API(REACT uchun kerak bo'lgan router)                 *
+ **************************************************************************/
+
+
 // 'MEMBER'ga dahldor routerlar
-// shartli ravishda - 'member'larga dahldor router deb qabul qilib olamiz
 
-// localhost:3000ga kirsak - 'Home Sahifadasiz' deb chiqadi
-router.get("/", (req, res) => {
-    memberController.home();
-});
-router.post("/signup",  memberController.signup);
+/* 
+router --- Clientning - browserning body qismida POST qilgan requestni olib - 'memberController.js'dagi
+memberController objectining signup() methodiga tashlaydi
+*/
+router.post("/signup",  memberController.signup); // bu yerdagi callbackni - 'memberController.js'dagi memberController objectining signup() methodiga oborib qo'ydik
 router.post("/login", memberController.login);
-router.get("/logout", (req, res) => {
-    memberController.logout();
-});
+router.get("/logout",memberController.logout);
+
+//** post(), get() methodlari - async callback methoddir
 
 
 
-// localhost:3000/menu
+
 // boshqa routerlar
-router.get("/menu", (req, res) => {
+router.get("/menu", (req, res) => { // localhost:3000/menu
     res.send("Menu sahifadasiz");
 });
 
-// localhost:3000/community
-router.get("/community", (req, res) => {
+
+router.get("/community", (req, res) => { // localhost:3000/community
     res.send("Jamiyat sahifadasiz");
 });
 
-// hosil qilgan routerni export qiilb olamiz
-module.exports = router;
+module.exports = router; // hosil qilgan routerni export qiilb olamiz
