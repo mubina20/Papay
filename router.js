@@ -1,11 +1,11 @@
 // router filemizni ichida esa - expressni require qilib olishimiz kerak!
 // va turli hil routerlarni shakllantiramiz 
 
-const express = require('express'); // express frameworkni chaqirib olamiz
+const exp = require('express'); // express frameworkni chaqirib olamiz
 
 // expressning ichidan Routerni olib chiqamiz
-const router = express.Router(); // Expressning Router() methodini - routerga tenglab olsak - router - object bo'ladi
-const memberController = require("./cotrollers/memberController");
+const router = exp.Router(); // Expressning Router() methodini - routerga tenglab olsak - router - object bo'ladi
+const memberController = require("./controllers/memberController");
 
 
 /**************************************************************************

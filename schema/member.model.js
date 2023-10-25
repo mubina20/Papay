@@ -4,7 +4,6 @@ const { member_status_enums, member_type_enums, ordernary_enums} = require("../l
 // memberSchema Model orqali - MongoDB - ma'lumotlarni DataBasega yoza boshlaydi 
 // agar DataBasemiz bo'lmasa - MongoDB -- 자동으로 magrition qiladi, ya'ni 'collection' ochib beradi  
 
-// Code first || Schema first method
 const memberSchema = new mongoose.Schema({
     // bizga 'member' bo'yicha nima kerak bo'ladi?
     /*
