@@ -6,6 +6,7 @@ body {
     height: 100%;
 }
 
+
 /* LOGIN */
 .login_container{
     position: relative;
@@ -234,7 +235,7 @@ body {
 }
 
 .filebox label {
-    width: 153px;
+    width: 140px;
     height: 55px;
 
     display: flex;

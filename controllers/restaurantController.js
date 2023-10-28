@@ -1,15 +1,15 @@
 const Product = require("../models/Product");
 const Member = require("../models/Member");
+const Definer = require("../lib/mistake");
+const assert = require("assert");
 
-let restaurantController = module.exports; // restaurantController - bu object
-/*
-Bu yerda - BackEndni ichida FrontEnd qurilyapdi, demak biron bir operatsiya yuzaga kelishidan oldin ma'lum bir EJS pagega borish kerak
-misol uchun: GET orqali - qaysidir signup pagega yoki qaysidir login pagega borish kerak 
-*/
+let restaurantController = module.exports; 
 
+//================================================= GET ===============================================================
 restaurantController.home = (req, res) => {
     try{
         console.log("GET: restaurant homega kimdir kirdi");
+
         res.render("home-page");
     } catch(err) {
         console.log(`ERROR: restaurant homega kirishda xatolik boldi! ${err.message}`);
@@ -17,14 +17,11 @@ restaurantController.home = (req, res) => {
     }
 }
 
+//================================================= GET ===============================================================
 restaurantController.getMyRestaurantProducts = async (req, res) => { 
     try{
-        // signupProcessini qilib bo'lgandan keyin - shu yerga keladi
-        // productlarni - DataBasedan chaqirib olib - userni restaurant-menu pagesiga kutib oladi
-
         console.log('GET: getMyRestaurantProductsga kimdir kirdi!'); 
-        // TODO: getMyRestaurant products
-        // productController va product Schema model hosil qilamiz
+
         const product = new Product();
         const data = await product.getAllProductsDataResto(res.locals.member);
 
@@ -36,49 +33,53 @@ restaurantController.getMyRestaurantProducts = async (req, res) => {
 }
 
 //================================================= GET ===============================================================
-
 restaurantController.getSingupMyRestaurant = async (req, res) => { 
     try{
         console.log('GET: getSingupMyRestaurantga kimdir kirdi!'); 
-        res.render('signup'); // render berish kerak ya'ni browserga page berish kerak, 'signup.ejs' pagega yuborsin
+
+        res.render('signup'); 
     } catch(err){
         console.log(`ERROR: getSingupMyRestaurantga kirishda xatolik boldi! ${err.message}`);
         res.json({state: 'muvaffaqiyatsiz!', message: err.message});
     }
 }
 
-
 //================================================= POST ===============================================================
 restaurantController.signupProcess = async (req, res) => {
     try{
-        console.log('POST: signupProcessga kimdir kirdi!'); // routerdan kirib kelyatgan requestni 
+        console.log('POST: signupProcessga kimdir kirdi!'); 
+
+        assert.ok(req.file, Definer.general_err3);
+
+        // console.log("req.file", req.file);
+        // console.log("req.body", req.body);
         
-        const data = req.body; // requestni body qismidan ma'lumotni olamiz
+        let new_member = req.body; 
+        new_member .mb_type = "RESTAURANT";
+        new_member.mb_image = req.file.path;
+
+
         const member = new Member();
-        const new_member = await member.signupData(data);
+        const result = await member.signupData(new_member);
 
-        req.session.member = new_member; // requestning ichiga sessionni - member bilan hosil qilamiz, va new_memberni tenglab qo'yamiz
-        // shundan keyin - user request qilsa - Server uni taniydi, ya'ni Server - member objectining ichiga qarasa - Userning datalari turadi
+        assert.ok(result, Definer.general_err1);
 
-        // signupProcessi qilingandan keyin - userni localhost:3000/resto/products/menuga yuboradi
-        res.redirect("/resto/products/menu"); // boshpa pagega yuborish methodi
+        // SESSION
+        req.session.member = result; 
 
-        // SESSION with COOKIES(Sessionlar - Cookielar bilan ishlaydigan method)
-        // memberController bilan restaurantController bir hil, farqi esa - restaurantControllerda - login qilingandan keyin - Session Authenticationni quramiz 
-
-        // res.json({state: 'succed', data: new_member}); // datani ichiga new_memberni beramiz
+        res.redirect("/resto/products/menu"); 
     } catch(err){
         console.log(`ERROR: controller.signupga kirishda xatolik boldi! ${err.message}`);
         res.json({state: 'muvaffaqiyatsiz!', message: err.message});
     }
-
 };
 
 //============================================== GET ===============================================================
 restaurantController.getLoginMyRestaurant = async (req, res) => {
     try{
         console.log('GET: getLoginMyRestaurantga kimdir kirdi!');
-        res.render('login-page'); // render berish kerak ya'ni page berish kerak, biz signup pageni beramiz 
+
+        res.render('login-page'); 
     } catch(err){
         console.log(`ERROR: getLoginMyRestaurantga kirishda xatolik boldi! ${err.message}`);
         res.json({state: 'muvaffaqiyatsiz!', message: err.message});
@@ -95,6 +96,7 @@ restaurantController.loginProcess = async (req, res) => {
         const member = new Member();
         const result = await member.loginData(data);
 
+        // SESSION 
         req.session.member = result; 
         
         req.session.save(function() { 
@@ -115,6 +117,7 @@ restaurantController.logout = (req, res) => {
     res.send("Logout sahifadasiz");
 }
 
+//============================================== POST ===============================================================
 restaurantController.validateAuthRestaurant = (req, res, next) => {
     if(req.session?.member?.mb_type === "RESTAURANT") {
         req.member = req.session.member;
@@ -126,6 +129,7 @@ restaurantController.validateAuthRestaurant = (req, res, next) => {
     });
 };
 
+//============================================== GET ===============================================================
 restaurantController.checkSessions = (req, res) => {
     if(req.session?.member){
         res.json({state: 'muvaffaqiyatli', data: req.session.member});

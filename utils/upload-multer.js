@@ -1,8 +1,6 @@
-const path = require('path');
-const multer = require('multer');
-const uuid = require('uuid');
-
-// MULTER IMAGE UPLOADER
+const path = require('path'); // Core package
+const multer = require('multer'); // External package
+const uuid = require('uuid'); // External package
 
 function getTargetImageStorage(address) {
     return multer.diskStorage({

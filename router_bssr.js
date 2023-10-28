@@ -1,21 +1,29 @@
 const exp = require('express'); 
-
 const router_bssr = exp.Router(); 
+
 const restaurantController = require("./controllers/restaurantController");
 const productController = require("./controllers/productController");
+
 const uploader_product = require('./utils/upload-multer')("products");
+const uploader_members = require('./utils/upload-multer')("members");
+
 
 /**************************************************************************************
  *                      BSSR(EJS uchun kerak bo'lgan router)                          *
  **************************************************************************************/
 
+
 // HOME
 router_bssr.get("/",restaurantController.home);
 
-// SIGNUP
+// SIGN-UP
 router_bssr
     .get("/sign-up",restaurantController.getSingupMyRestaurant)
-    .post("/sign-up", restaurantController.signupProcess);
+    .post(
+        "/sign-up", 
+        uploader_members.single('restaurant_img'), 
+        restaurantController.signupProcess
+    );
 
 // LOGIN
 router_bssr
@@ -37,7 +45,7 @@ router_bssr.post(
     productController.addNewProduct
 );
 
-// "/PRODUCTS/EDIT/:ID" - (URLda ikkita narsa bor: PARAMS va QUERY, biz paramdan olyapmiz)
+// "/PRODUCTS/EDIT/:ID" - (URLda ikkita narsa bor: PARAMS va QUERY)
 router_bssr.post(
     "/products/edit/:id", // bu yerda bitta param bor, yana bitta param yuborsak ham bo'ladi ("/products/edit/:id/:ids")
     restaurantController.validateAuthRestaurant,
