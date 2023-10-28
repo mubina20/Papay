@@ -1,8 +1,6 @@
-// clientlarning requestlarini 
+const exp = require('express'); 
 
-const exp = require('express'); // framework
-
-const router_bssr = exp.Router(); // expressning ichidan Routerni olib chiqamiz
+const router_bssr = exp.Router(); 
 const restaurantController = require("./controllers/restaurantController");
 const productController = require("./controllers/productController");
 const uploader_product = require('./utils/upload-multer')("products");
@@ -34,16 +32,16 @@ router_bssr.get("/products/menu",restaurantController.getMyRestaurantProducts); 
 // /PRODUCTS/CREATE
 router_bssr.post(
     "/products/create", 
-    restaurantController.validateAuthRestaurant, // "only authenticated members with restaurant type"
-    uploader_product.array("product_images", 5), // 5tagacha
+    restaurantController.validateAuthRestaurant, 
+    uploader_product.array("product_images", 5), 
     productController.addNewProduct
 );
 
-// /PRODUCTS/EDIT/:ID
+// "/PRODUCTS/EDIT/:ID" - (URLda ikkita narsa bor: PARAMS va QUERY, biz paramdan olyapmiz)
 router_bssr.post(
-    "/products/edit/:id", 
+    "/products/edit/:id", // bu yerda bitta param bor, yana bitta param yuborsak ham bo'ladi ("/products/edit/:id/:ids")
     restaurantController.validateAuthRestaurant,
     productController.updateChosenProduct
 );
 
-module.exports = router_bssr; // hosil qilgan routerlarni export qilamiz 
+module.exports = router_bssr; 
