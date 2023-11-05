@@ -34,10 +34,13 @@ router_bssr
 router_bssr.get("/logout", restaurantController.logout);
 router_bssr.get("/check-me", restaurantController.checkSessions);
 
-// /PRODUCTS/MENU
-router_bssr.get("/products/menu",restaurantController.getMyRestaurantProducts); // restaurantga tegishli bo'lgan productlarni ma'lumotlarini olib kelsin
+// (RESTAURANT) restaurant menu
+router_bssr.get(
+    "/products/menu",
+    restaurantController.validateAuthRestaurant,
+    restaurantController.getMyRestaurantProducts); // restaurantga tegishli bo'lgan productlarni ma'lumotlarini olib kelsin
 
-// /PRODUCTS/CREATE
+// (RESTAURANT) create product
 router_bssr.post(
     "/products/create", 
     restaurantController.validateAuthRestaurant, 
@@ -45,11 +48,24 @@ router_bssr.post(
     productController.addNewProduct
 );
 
-// "/PRODUCTS/EDIT/:ID" - (URLda ikkita narsa bor: PARAMS va QUERY)
+// (RESTAURANT) edit product - (URLda ikkita narsa bor: PARAMS va QUERY)
 router_bssr.post(
     "/products/edit/:id", // bu yerda bitta param bor, yana bitta param yuborsak ham bo'ladi ("/products/edit/:id/:ids")
     restaurantController.validateAuthRestaurant,
     productController.updateChosenProduct
 );
+
+// (ADMIN) all restaurant
+router_bssr.get( 
+    "/all-restaurant",
+    restaurantController.validateAdmin,
+    restaurantController.getAllRestaurants 
+);
+
+// (ADMIN) edit restaurant
+router_bssr.post( 
+    "/all-restaurant/edit",
+    restaurantController.validateAdmin,
+    restaurantController.updateRestaurantByAdmin );
 
 module.exports = router_bssr; 

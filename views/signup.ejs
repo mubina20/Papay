@@ -15,8 +15,8 @@
             <!-- LOGIN TOP -->
             <div class="login_top">
                 <span>Ro'yhatdan o'tish</span>
-                <div>Bosh sahifaga qaytish <a href="/resto" style="color: #6440fb;">Home</a> </div>
-                <p>Ro'yhatdan allaqachon o'tganmisiz? <a href="/resto/login" style="color: #6440fb;">Login</a> </p>
+                <div>Bosh sahifaga qaytish <a href="/resto" style="color: #6440fb;">Home</a></div>
+                <p>Ro'yhatdan allaqachon o'tganmisiz? <a href="/resto/login" style="color: #6440fb;">Login</a></p>
             </div>
 
             <!-- mb_nick va mb_phone -->
@@ -54,7 +54,7 @@
                 <div class="media-frame">
                     <img class="upload_img_frame" src="/images/default_resto.jpg" alt="" />
                     <div class="upload_container">
-                        <span class="media_text">Taom Rasmi</span>
+                        <span class="media_text">Restaurant Rasmi</span>
                         <div class="filebox bs3-primary preview-image">
                             <input class="upload-name" value="Rasmni tanlang" disabled="disabled">
                             <label for="input_file">Rasm Yuklash</label>
@@ -86,20 +86,19 @@
 
         fileTarget.on("change", function() {
             if(window.FileReader) {
-                const uploading_file = $(this)[0].files[0];
-                const fileType = uploading_file["type"];
-                const validImageTypes = ["image/jpg", "image/jpeg", "image/png"];
+                const uploading_file = $(this)[0].files[0]; 
+                const fileType = uploading_file["type"]; 
+                const validImageTypes = ["image/jpg", "image/jpeg", "image/png"]; 
 
-                if(!validImageTypes.includes(fileType)) {
+                if(!validImageTypes.includes(fileType)) { 
                     alert("Iltimos ruhsat etilgan formatdagi rasmlarni yuklang: jpg, jpeg, va png!");
                 } else {
-                    if(uploading_file) {
-                        console.log(URL.createObjectURL(uploading_file));
-                        $(".upload_img_frame")
-                            .attr("src", URL.createObjectURL(uploading_file))
-                            .addClass("udachno")
+                    if(uploading_file) { 
+                        console.log(URL.createObjectURL(uploading_file)); 
+                        $(".upload_img_frame") 
+                            .attr("src", URL.createObjectURL(uploading_file)) 
                     }
-                    filename = uploading_file.name;
+                    filename = uploading_file.name; 
                 }
             }
 
@@ -114,11 +113,10 @@
         const mb_confirm_password = $(".mb_confirm_password").val();
         const restaurant_img = $(".restaurant_img").get(0).files[0] ?? null;
 
-        // alert(`mb_nick: ${mb_nick}, mb_phone: ${mb_phone}, mb_password: ${mb_password}, mb_mb_confirm_password: ${mb_confirm_password}`);
-
         if(mb_nick == "" || mb_phone == "" || mb_password == "" || mb_confirm_password == "") {
             alert('Iltimos hamma malumotlarni kiriting!');
             return false;
+
         } else if(mb_password !== mb_confirm_password) {
             alert(`Iltimos passwordni to'g'ri kiriting!`);
             return false;

@@ -26,19 +26,15 @@ const memberSchema = new mongoose.Schema({
     mb_password: {
         type: String,
         required: true,
-        // talab qilinganda ber
         select: false
     },
     mb_type: {
         type: String,
         required: false,
-        default: "USER", // hech qanday ma'lumot kelmasa - USER by default bo'ladi
-        // bu enum valuelarnigina qabul qilib oladi
+        default: "USER", 
         enum: {
             values: member_type_enums,
-            // agar manashulardan boshqa qiymatlar kelsa - bizning DataBasemizga DATA yozilmaydi ya'ni fail bo'ladi, xatolik yuzaga keladi
             message: "{VALUES} ruxsat etilgan qiymatlar qatoriga kirmaydi"
-            // keyin biz bu xatolikni - catch qilib, bu xatolikni response qilib yuboramiz
         }
     },
     // enum valuelarni ko'p ishlatamiz 

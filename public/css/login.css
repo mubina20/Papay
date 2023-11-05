@@ -225,7 +225,8 @@ body {
     display: flex;
 }
 
-.filebox input[type="file"] {
+
+.filebox input[type="file"] { /* fileboxda - 2ta input bor, bizga ikkinchi input(ya'ni tipi 'file' bo'lgan input) kerak */
     position: relative;
     width: 1px;
     height: 1px;
@@ -250,9 +251,10 @@ body {
     font-size: 15px;
     line-height: 26px;
     color: #FFFFFF;
+    cursor: pointer;
 }
 
-.filebox .upload-name {
+.filebox .upload-name { /* fileboxning 1nchi inputi */
     position: relative;
     padding: 20px;
     width: 85%;
@@ -265,7 +267,7 @@ body {
     border-radius: 8px 0px 0px 8px;
 }
 
-.thumbnail_desc {
+.thumbnail_desc { /* o'ng tomondagi - 2ta inputning tagidagi <p> */
     margin-top: 25px;
     font-family: 'GT Walsheim Pro';
     font-style: normal;
@@ -274,4 +276,3 @@ body {
     line-height: 26px;
     color: #3532c2;
 }
-

@@ -1,18 +1,46 @@
 const Product = require("../models/Product");
 const Member = require("../models/Member");
+const Restaurant = require('../models/Restaurant');
 const Definer = require("../lib/mistake");
 const assert = require("assert");
 
 let restaurantController = module.exports; 
 
+restaurantController.getRestaurants = async (req, res) => {
+	try {
+		console.log('GET: getRestaurantsga kimdir kirdi');
+		const data = req.query,
+			restaurant = new Restaurant(),
+			result = await restaurant.getRestaurantsData(req.member, data);
+		res.json({ state: 'muvaffaqiyatli', data: result });
+	} catch (err) {
+		console.log(`ERROR: getRestaurantsga kirishda xatolik bor, ${err.message}`);
+		res.json({ state: 'muvaffaqiyatsiz', message: err.message });
+	}
+};
+
+restaurantController.getChosenRestaurant = async (req, res) => {
+	try {
+		console.log("GET: Admin restaurantni o'zgartirmoqda");
+		const id = req.params.id,
+			restaurant = new Restaurant(),
+			result = await restaurant.getChosenRestaurantData(req.member, id);
+
+		res.json({ state: 'muvaffaqiyatli', data: result });
+	} catch (err) {
+		console.log(`ERROR: restaurantni o'zgartirishda xatolik bor, ${err.message}`);
+		res.json({ state: 'fail', message: err.message });
+	}
+};
+
 //================================================= GET ===============================================================
 restaurantController.home = (req, res) => {
     try{
-        console.log("GET: restaurant homega kimdir kirdi");
+        console.log("GET: home pagega kimdir kirdi");
 
         res.render("home-page");
     } catch(err) {
-        console.log(`ERROR: restaurant homega kirishda xatolik boldi! ${err.message}`);
+        console.log(`ERROR: home pagega kirishda xatolik boldi! ${err.message}`);
         res.json({state: 'muvaffaqiyatsiz!', message: err.message});
     }
 }
@@ -20,26 +48,26 @@ restaurantController.home = (req, res) => {
 //================================================= GET ===============================================================
 restaurantController.getMyRestaurantProducts = async (req, res) => { 
     try{
-        console.log('GET: getMyRestaurantProductsga kimdir kirdi!'); 
+        console.log('GET: restaurant-menuga kimdir kirdi!'); 
 
         const product = new Product();
-        const data = await product.getAllProductsDataResto(res.locals.member);
+        const data = await product.getAllProductsDataResto(req.member);
 
         res.render("restaurant-menu", { restaurant_data: data });
     } catch(err){
-        console.log(`ERROR: getMyRestaurantProductsga kirishda xatolik boldi! ${err.message}`);
-        res.json({state: 'muvaffaqiyatsiz!', message: err.message});
+        console.log(`ERROR: restaurant-menuga kirishda xatolik boldi! ${err.message}`);
+        res.redirect('/resto');
     }
 }
 
 //================================================= GET ===============================================================
 restaurantController.getSingupMyRestaurant = async (req, res) => { 
     try{
-        console.log('GET: getSingupMyRestaurantga kimdir kirdi!'); 
+        console.log('GET: signup pagega kimdir kirdi!'); 
 
         res.render('signup'); 
     } catch(err){
-        console.log(`ERROR: getSingupMyRestaurantga kirishda xatolik boldi! ${err.message}`);
+        console.log(`ERROR: signup pagega kirishda xatolik boldi! ${err.message}`);
         res.json({state: 'muvaffaqiyatsiz!', message: err.message});
     }
 }
@@ -47,15 +75,15 @@ restaurantController.getSingupMyRestaurant = async (req, res) => {
 //================================================= POST ===============================================================
 restaurantController.signupProcess = async (req, res) => {
     try{
-        console.log('POST: signupProcessga kimdir kirdi!'); 
+        console.log('POST: kimdir signup qilmoqda'); 
 
-        assert.ok(req.file, Definer.general_err3);
+        assert.ok(null, Definer.general_err3);
 
-        // console.log("req.file", req.file);
-        // console.log("req.body", req.body);
+        console.log("req.file", req.file);
+        console.log("req.body", req.body);
         
         let new_member = req.body; 
-        new_member .mb_type = "RESTAURANT";
+        new_member.mb_type = "RESTAURANT";
         new_member.mb_image = req.file.path;
 
 
@@ -69,19 +97,21 @@ restaurantController.signupProcess = async (req, res) => {
 
         res.redirect("/resto/products/menu"); 
     } catch(err){
-        console.log(`ERROR: controller.signupga kirishda xatolik boldi! ${err.message}`);
-        res.json({state: 'muvaffaqiyatsiz!', message: err.message});
+        console.log(`ERROR: signup qilishda xatolik boldi! ${err.message}`);
+        res.send(
+            `<script> alert("${err.message}"); window.location.replace("/resto/sign-up"); </script>`
+        );
     }
 };
 
 //============================================== GET ===============================================================
 restaurantController.getLoginMyRestaurant = async (req, res) => {
     try{
-        console.log('GET: getLoginMyRestaurantga kimdir kirdi!');
+        console.log('GET: login pagega kimdir kirdi!');
 
         res.render('login-page'); 
     } catch(err){
-        console.log(`ERROR: getLoginMyRestaurantga kirishda xatolik boldi! ${err.message}`);
+        console.log(`ERROR: login pagega kirishda xatolik boldi! ${err.message}`);
         res.json({state: 'muvaffaqiyatsiz!', message: err.message});
     }
 }
@@ -89,7 +119,7 @@ restaurantController.getLoginMyRestaurant = async (req, res) => {
 //============================================== POST ===============================================================
 restaurantController.loginProcess = async (req, res) => {
     try{
-        console.log('POST: loginProcessga kimdir kirdi!'); 
+        console.log('POST: kimdir login qilmoqda'); 
         
         const data = req.body; 
 
@@ -106,15 +136,24 @@ restaurantController.loginProcess = async (req, res) => {
         });
 
     } catch(err){
-        console.log(`ERROR: controller.loginga kirishda xatolik boldi! ${err.message}`);
+        console.log(`ERROR: login qilishda xatolik boldi! ${err.message}`);
         res.json({state: 'muvaffaqiyatsiz!', message: err.message});
     }
 }
 
 //============================================== GET ===============================================================
 restaurantController.logout = (req, res) => {
-    console.log('GET cont.logout');
-    res.send("Logout sahifadasiz");
+    try{
+        console.log("GET: kimdir logout qilmoqda");
+
+        req.session.destroy(function() {
+            res.redirect("/resto");
+        })
+
+    } catch(err) {
+        console.log(`ERROR: logout qilishda xatolik boldi! ${err.message}`);
+        res.json({state: 'muvaffaqiyatsiz!', message: err.message});
+    }
 }
 
 //============================================== POST ===============================================================
@@ -124,8 +163,8 @@ restaurantController.validateAuthRestaurant = (req, res, next) => {
         next();
     } else 
     res.json({
-        state: "neudachno", 
-        message: "only authenticated members with restaurant type"
+        state: "muvaffaqiyatsiz!", 
+        message: "faqat RESTAURANT typedagi user bo'lishi kerak!"
     });
 };
 
@@ -134,6 +173,52 @@ restaurantController.checkSessions = (req, res) => {
     if(req.session?.member){
         res.json({state: 'muvaffaqiyatli', data: req.session.member});
     } else{
-        res.json({state: 'muvaffaqiyatsiz!', message: "You are not authenticated"});
+        res.json({state: 'muvaffaqiyatsiz!', message: "Siz tasdiqlanmagansiz!"});
     }
+};
+
+restaurantController.validateAdmin = (req, res, next) => {
+	if (req.session?.member?.mb_type === 'ADMIN') {
+		req.member = req.session.member;
+		next();
+	} else {
+		const html = `<script>
+                        alert('Admin page: Permission denied');
+                        window.location.replace('/resto');
+                    <script>`;
+                    
+		res.end(html);
+	}
+};
+
+restaurantController.getAllRestaurants = async (req, res) => {
+	try {
+		console.log('GET Admin - all-restaurant pagega kirmoqda');
+
+		const restaurant = new Restaurant();
+		const restaurants_data = await restaurant.getAllRestaurantsData();
+		console.log( "restaurants_data:", restaurants_data );
+		res.render('all-restaurant', { restaurants_data: restaurants_data });
+	} catch (err) {
+		console.log(`ERROR: all-restaurant pagega kirishda xatolik bor, ${err.message}`);
+		res.json({ state: 'muvaffaqiyatsiz!', message: err.message });
+	}
+};
+
+restaurantController.updateRestaurantByAdmin = async (req, res) => {
+	try {
+		console.log("GET: Admin restaurantni o'zgartirmoqda");
+        console.log("req.body::: ", req.body);
+
+		const restaurant = new Restaurant();
+		const result = await restaurant.updateRestaurantByAdminData(req.body);
+        
+
+		await res.json({ state: 'muvaffaqiyatli', data: result });
+
+        console.log("result::: ", result);
+	} catch (err) {
+		console.log(`ERROR: o'zgartirishda xatolik bor, ${err.message}`);
+		res.json({ state: 'muvaffaqiyatsiz!', message: err.message });
+	}
 };
