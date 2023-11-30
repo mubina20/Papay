@@ -1,10 +1,7 @@
 const MemberModel = require('../schema/member.model'); // Member Schema Model
-
 const Definer = require('../lib/mistake');
-
 const assert = require('assert'); // External package
 const bcrypt = require('bcryptjs'); // External package
-
 
 class Member { 
     constructor() {
@@ -35,7 +32,7 @@ class Member {
         }
     }    
 
-    // SIGNUP PROCESS
+    // LOGIN PROCESS
     async loginData(input) { 
         try{
             const member = await this.memberModel 

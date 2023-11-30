@@ -23,4 +23,3 @@ const makeUploader = (address) => {
 }
 
 module.exports = makeUploader;
-
