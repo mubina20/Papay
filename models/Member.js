@@ -2,6 +2,7 @@ const MemberModel = require('../schema/member.model'); // Member Schema Model
 const Definer = require('../lib/mistake');
 const assert = require('assert'); // External package
 const bcrypt = require('bcryptjs'); // External package
+const { shapeIntoMongooseObjectId } = require("../lib/config");
 
 class Member { 
     constructor() {
@@ -40,20 +41,45 @@ class Member {
                 {mb_nick: input.mb_nick}, 
                 {mb_nick: 1, mb_password: 1}) 
             .exec(); 
-
             assert.ok(member, Definer.auth_err3); 
+
             const isMatch = await bcrypt.compare( 
                 input.mb_password,  
                 member.mb_password  
             );
-
             assert.ok(isMatch, Definer.auth_err4); 
 
             return await this.memberModel
-            .findOne({
-                mb_nick: input.mb_nick 
-            })
-            .exec();
+                .findOne({
+                    mb_nick: input.mb_nick 
+                })
+                .exec();
+        } catch(err) {
+            throw err;
+        }
+    }
+
+    // MEMBER DATA
+    async getChosenMemberData(member, id) { 
+        try{
+			id = shapeIntoMongooseObjectId(id);
+
+            console.log('member:::', member);
+
+            if (member) {
+				// Condition if not seen before
+			}
+
+			const result = await this.memberModel
+                .aggregate([ 
+                    { $match: {_id: id, mb_status: "ACTIVE"} },
+                    { $unset: "mb_password" }
+                ])
+                .exec();
+
+			assert.ok(result, Definer.general_err2);
+
+			return result[0];
         } catch(err) {
             throw err;
         }
