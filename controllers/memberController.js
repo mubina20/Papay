@@ -101,7 +101,7 @@ memberController.getChosenMember = async (req, res) => {
 		console.log(`ERORR, cont/getChosenMember, ${err.message}`);
 
 		const error = `<script>alert("Something went wrong!")</script>`;
-		res.send(error);
+		res.end(error);
 	}
 };
 

@@ -65,17 +65,18 @@ class Member {
         try{
 			id = shapeIntoMongooseObjectId(id);
 
-            console.log('member:::', member);
-
             if (member) {
 				// Condition if not seen before
 				await this.viewChosenItemByMember(member, id, 'member');
 			}
+            console.log('member:::', member);
 
 			const result = await this.memberModel
                 .aggregate([ 
                     { $match: {_id: id, mb_status: "ACTIVE"} },
                     { $unset: "mb_password" }
+
+                    // TODO: check auth member product liked the chosen member
                 ])
                 .exec();
 

@@ -6,16 +6,36 @@ let productController = module.exports;
 
 productController.getAllProducts = async (req, res) => {
     try {
-        console.log("POST: getAllProducts");
+        console.log("POST: Restaurantning barcha productlari!");
         const product = new Product();
         const results = await product.getAllProductsData(req.member, req.body);
         
         res.json({ state: "success", data: results });        
     } catch (err){
         console.log(`ERORR: getAllProducts, ${err.message}`);
-        res.json({ state: "fail", message: err.message });
+        
+        const error = `<script>alert("Something went wrong!")</script>`;
+		res.end(error);
     }
 }
+
+productController.getChosenProduct = async (req, res) => {
+    try {
+        console.log("GET: Bir product tanlandi!");
+
+        const id = req.params.id;
+        const product = new Product();
+        const result = await product.getChosenProductData(req.member, id);   
+        
+        res.json({ state: "success", data: result });        
+    } catch (err){
+        console.log(`ERORR: Product tanlashda xatolik bo'ldi!, ${err.message}`);
+        
+        const error = `<script>alert("Something went wrong!")</script>`;
+		res.end(error);
+    }
+}
+
 
 /*************************************************
  *             BSSR RELATED METHODS              *
@@ -51,15 +71,16 @@ productController.addNewProduct = async (req, res) => {
 
 productController.updateChosenProduct = async (req, res) => {
     try{
-        console.log('POST: updateChosenProductga kimdir kirdi!');
+        console.log("POST: Product o'zgarmoqda!");
         const product = new Product();
         const id = req.params.id;
         const result = await product.updateChosenProductData(id, req.body, req.member._id);
 
         await res.json({state: 'muvaffaqiyatli', data: result});
     } catch(err) {
-        console.log(`ERROR: updateChosenProductga kirishda xatolik boldi! ${err.message}`);
+        console.log(`ERROR: Product o'zgartirishda xatolik boldi! ${err.message}`);
 
+        res.json({state: 'fail', message: "Product o'zgartirishda xatolik bo'ldi! (updateChosenProduct)"});
     }
 };
 
