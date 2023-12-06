@@ -4,14 +4,17 @@ const Restaurant = require('../models/Restaurant');
 const Definer = require("../lib/mistake");
 const assert = require("assert");
 
-let restaurantController = module.exports; 
+let restaurantController = module.exports;
 
+//============================================== GET ===============================================================
 restaurantController.getRestaurants = async (req, res) => {
 	try {
 		console.log('GET: getRestaurantsga kimdir kirdi');
-		const data = req.query,
-			restaurant = new Restaurant(),
-			result = await restaurant.getRestaurantsData(req.member, data);
+		const data = req.query;
+        console.log("QUERY Data:::", data);
+
+		const restaurant = new Restaurant();
+		const result = await restaurant.getRestaurantsData(req.member, data);
 		res.json({ state: 'muvaffaqiyatli', data: result });
 	} catch (err) {
 		console.log(`ERROR: getRestaurantsga kirishda xatolik bor, ${err.message}`);
@@ -19,6 +22,11 @@ restaurantController.getRestaurants = async (req, res) => {
 	}
 };
 
+/*************************************************
+ *             BSSR RELATED METHODS              *
+ *************************************************/
+
+//============================================== GET ===============================================================
 restaurantController.getChosenRestaurant = async (req, res) => {
 	try {
 		console.log("GET: Admin restaurantni o'zgartirmoqda");
@@ -191,6 +199,7 @@ restaurantController.validateAdmin = (req, res, next) => {
 	}
 };
 
+//============================================== GET ===============================================================
 restaurantController.getAllRestaurants = async (req, res) => {
 	try {
 		console.log('GET Admin - all-restaurant pagega kirmoqda');
@@ -205,6 +214,7 @@ restaurantController.getAllRestaurants = async (req, res) => {
 	}
 };
 
+//============================================== GET ===============================================================
 restaurantController.updateRestaurantByAdmin = async (req, res) => {
 	try {
 		console.log("GET: Admin restaurantni o'zgartirmoqda");
