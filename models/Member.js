@@ -94,11 +94,9 @@ class Member {
 			const mb_id = shapeIntoMongooseObjectId(member._id);
 
 			const view = new View(mb_id);
-
-			//Validation needed
 			const isValid = await view.validateChosenTarget(view_ref_id, group_type);
-			// console.log('isValid:::', isValid);
 			assert.ok(isValid, Definer.general_err2);
+            // console.log('isValid:::', isValid);
 
 			// logged user has seen target before
             const doesExist = await view.checkViewExistence(view_ref_id);
