@@ -4,9 +4,9 @@ const Schema = mongoose.Schema;
 
 const orderSchema = new mongoose.Schema(
 	{
-		order_total_amount: { 
-            type: Number, 
-            required: true 
+		order_total_amount: {
+            type: Number,
+            required: true,
         },
 		order_delivery_cost: { 
             type: Number, 
