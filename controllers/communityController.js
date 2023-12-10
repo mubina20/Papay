@@ -47,8 +47,8 @@ communityController.getMemberArticles = async (req, res) => {
             : req.member._id; // Authentication bo'lgan userning _idsi
         assert.ok(mb_id, Definer.article_err1);
 
-        console.log("mb_id:::", mb_id);
-        console.log("QUERY:::", req.query.mb_id);
+        // console.log("mb_id:::", mb_id);
+        // console.log("QUERY:::", req.query.mb_id);
         
         const community = new Community();
         const result = await community.getMemberArticlesData(req.member, mb_id, req.query);
@@ -59,3 +59,18 @@ communityController.getMemberArticles = async (req, res) => {
         res.json({state: 'muvaffaqiyatsiz', message: err.message});
     }
 };
+
+communityController.getArticles = async (req, res) => {
+    try{
+        console.log("GET: User community pagega kirdi!");
+        // console.log("QUERY:::", req.query);
+
+        const community = new Community();
+        const result = await community.getArticlesData(req.member, req.query);
+        
+        res.json({state: 'Muvaffaqiyatli', data: result});
+    } catch(err) {
+        console.log(`ERROR: Community pagega kirishda xatolik bo'ldi, ${err.message}`); 
+        res.json({state: 'muvaffaqiyatsiz', message: err.message});
+    }
+}
