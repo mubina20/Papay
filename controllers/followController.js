@@ -6,7 +6,7 @@ let followController = module.exports;
 
 followController.subscribe = async (req, res) => {
     try{
-        console.log("POST: Kimdir subscribe qilmoqda!");
+        console.log("POST: Kimdir subscribe qildi!");
         // console.log("REQ.BODY:::", req.body);
 
         assert.ok(req.member, Definer.auth_err5);
@@ -16,7 +16,23 @@ followController.subscribe = async (req, res) => {
 
         res.json({state: 'Muvaffaqiyatli', data: result});
     } catch(err) {
-        console.log(`ERROR: Subscribe qilishda xatolik bo'ldi, ${err.message}`); 
-        res.json({state: 'muvaffaqiyatsiz', message: err.message});
+        console.log(`ERROR: Subscribe qilishda xatolik bo'ldi!, ${err.message}`); 
+        res.json({state: 'muvaffaqiyatsiz!', message: "Subscribe qilishda xatolik bo'ldi!"});
     }
-}
+};
+
+followController.unsubscribe = async (req, res) => {
+    try{
+        console.log("POST: Kimdir unsubscribe qildi!");
+
+        assert.ok(req.member, Definer.auth_err5);
+
+        const follow = new Follow();
+        const result = await follow.unsubscribeData(req.member, req.body);
+
+        res.json({state: "Muvaffaqiyatli", data: result});
+    } catch(err) {
+        console.log(`ERROR: Unsubscribe qilishda xatolik bo'ldi!, ${err.message}`);
+        res.json({state: 'Muvaffaqiyatsiz!', data: "Unsubscribe qilishda xatolik bo'ldi!"});
+    }
+};
