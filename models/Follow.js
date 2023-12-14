@@ -98,41 +98,7 @@ class Follow {
             throw err;
         }
     }
-
-    // async getMemberFollowingsData(inquery) {
-    //     try{
-    //         const subscriber_id = shapeIntoMongooseObjectId(inquery.mb_id);
-    //         const page = inquery.page * 1;
-    //         const limit = inquery.limit * 1;
-
-    //         const result = await this.followModel
-    //             .aggregate([
-    //                 { $match: { subscriber_id: subscriber_id } },
-    //                 { $sort: { createdAt: -1 } },
-    //                 { $skip: (page -1) * limit },
-    //                 { $limit: limit },
-    //                 {
-    //                     $lookup: {
-    //                         from: 'members',
-    //                         localField: 'mb_id',
-    //                         foreignField: '_id',
-    //                         as: 'member_data',
-    //                     }
-    //                 },
-    //                 { $unwind: '$member_data' }
-    //             ])
-    //             .exec();
-
-    //         assert.ok(result, Definer.follow_err3);
-    //         // console.log("RESULT:::", result);
-
-    //         return result;
-    //     } catch(err){
-    //         throw err;
-    //     }
-    // }
-
-
+    
     async getMemberFollowingsData(inquery) {
         try {
             const subscriber_id = shapeIntoMongooseObjectId(inquery.mb_id),
