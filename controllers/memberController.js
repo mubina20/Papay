@@ -62,7 +62,11 @@ memberController.createToken = (result) => {
 			mb_type: result.mb_type
 		};
 
-		const token = jwt.sign(upload_data, process.env.SECRET_TOKEN, { expiresIn: '6h' });
+		const token = jwt.sign(
+			upload_data, 
+			process.env.SECRET_TOKEN, 
+			{ expiresIn: '6h' } // TOKENni amal qilish muddati
+		);
 
 		assert.ok(token, Definer.auth_err2);
 		return token;

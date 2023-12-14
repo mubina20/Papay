@@ -36,3 +36,18 @@ followController.unsubscribe = async (req, res) => {
         res.json({state: 'Muvaffaqiyatsiz!', data: "Unsubscribe qilishda xatolik bo'ldi!"});
     }
 };
+
+followController.getMemberFollowings = async (req, res) => {
+    try{
+        console.log("GET: Kimdir followinglarni ko'rmoqda!");
+        // console.log("QUERY:::", req.query);
+
+        const follow = new Follow();
+        const result = await follow.getMemberFollowingsData(req.query);
+
+        res.json({state: "Muvaffaqiyatli", data: result})
+    } catch(err) {
+        console.log(`ERROR: Followinglarni ko'rishda xatokil bo'ldi! ${err.message}`);
+        res.json({state: "Muvaffaqiyatsiz!", message: "getMemberFollowingsda xatolik bo'ldi!"})
+    }
+};
