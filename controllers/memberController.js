@@ -109,6 +109,27 @@ memberController.getChosenMember = async (req, res) => {
 	}
 };
 
+memberController.likeMemberChosen = async (req, res) => {
+	try {
+		console.log('POST: User like bosmiqda! (likeMemberChosen)');
+
+		assert.ok(req.member, Definer.auth_err5);
+		
+		const like_ref_id = req.body.like_ref_id;
+		const group_type = req.body.group_type;
+		// console.log("LIKE_REF_ID:::", like_ref_id);
+		// console.log("GROUP_TYPE:::", group_type);
+
+		const member = new Member();
+		const result = await member.likeChosenItemByMember(req.member, like_ref_id, group_type);
+
+		res.json({ state: 'Muvaffaqiyatli', data: result });
+	} catch (err) {
+		console.log(`ERORR: Like bosishda xatolik bo'ldi!, ${err.message}`);
+		res.json({state: 'muvaffaqiyatsiz!', message: "Like bosishda xatolik bo'ldi!"});
+	}
+};
+
 memberController.retrieveAuthMember = async (req, res, next) => {
 	try {
 		const token = req.cookies['access_token'];
@@ -118,4 +139,4 @@ memberController.retrieveAuthMember = async (req, res, next) => {
 		console.log(`ERORR: retrieveAuthMember, ${err.message}`);
 		next();
 	}
-}
+};

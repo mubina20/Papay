@@ -48,7 +48,7 @@ const boArticleSchema = new mongoose.Schema(
             default: 0 
         },
 		mb_id: { 
-            type: mongoose.Schema.Types.ObjectId, 
+            type: Schema.Types.ObjectId, 
             ref: 'Member', 
             required: true 
         }
