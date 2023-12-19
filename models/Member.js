@@ -9,7 +9,8 @@ const bcrypt = require('bcryptjs'); // External package
 const Definer = require('../lib/mistake'); // Errors
 const { 
     shapeIntoMongooseObjectId,
-    lookup_auth_member_following
+    lookup_auth_member_following,
+    lookup_auth_member_liked
 } = require("../lib/config"); // Configuration
 
 
@@ -84,7 +85,9 @@ class Member {
 				// Condition if not seen before
 				await this.viewChosenItemByMember(member, id, 'member');
                 // TODO: Check auth member product liked the chosen member
-                aggregateQuery.push(lookup_auth_member_following(auth_mb_id, 'members'));
+            
+                aggregateQuery.push(lookup_auth_member_liked(auth_mb_id));
+				aggregateQuery.push(lookup_auth_member_following(auth_mb_id, 'members'));
 			}
 
 			const result = await this.memberModel.aggregate(aggregateQuery).exec();
@@ -145,7 +148,7 @@ class Member {
 				like_ref_id: data.like_ref_id,
 				like_status: doesExist ? 0 : 1,
 			};
-            console.log("RESULT:::", result);
+            // console.log("RESULT:::", result);
 
 			return result;
         } catch(err) {
