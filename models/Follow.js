@@ -1,8 +1,12 @@
 const assert = require('assert');
 const Definer = require('../lib/mistake');
-const { shapeIntoMongooseObjectId } = require('../lib/config');
 const FollowModel = require('../schema/follow.model');
 const MemberModel = require('../schema/member.model');
+const { 
+    shapeIntoMongooseObjectId, 
+    lookup_auth_member_following 
+} = require('../lib/config');
+
 
 class Follow {
     constructor() {
@@ -37,7 +41,7 @@ class Follow {
         } catch(err) {
             throw err;
         }
-    }
+    };
 
     async createSubscriptionData(follow_id, subscriber_id) {
         try{
@@ -52,7 +56,7 @@ class Follow {
             console.log("MongoDB_ERROR:::", mongo_err);
             throw new Error(Definer.follow_err2);
         }
-    }
+    };
 
     async modifyMemberFollowCounts(mb_id, type, modifier) {
         try{
@@ -76,7 +80,7 @@ class Follow {
         } catch(err) {
             throw err;
         }
-    }
+    };
 
     async unsubscribeData(member, data) {
         try{
@@ -97,7 +101,7 @@ class Follow {
         } catch(err) {
             throw err;
         }
-    }
+    };
     
     async getMemberFollowingsData(inquery) {
         try {
@@ -125,6 +129,42 @@ class Follow {
     
             assert.ok(result, Definer.follow_err3);
             // console.log("RESULT:::", result);
+
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    };
+
+    async getMemberFollowersData(member, inquery) {
+        try {
+            const follow_id = shapeIntoMongooseObjectId(inquery.mb_id),
+                page = inquery.page * 1,
+                limit = inquery.limit * 1;
+    
+            let aggregateQuery = [
+                { $match: { follow_id: follow_id } },
+                { $sort: { createdAt: -1 } },
+                { $skip: (page - 1) * limit },
+                { $limit: limit },
+                {
+                    $lookup: {
+                        from: "members",
+                        localField: "subscriber_id",
+                        foreignField: "_id",
+                        as: "subscriber_member_data"
+                    }
+                },
+                { $unwind: "$subscriber_member_data" }
+            ];
+    
+            // following followed back to the subscriber
+            if (member && member._id === inquery.mb_id) {
+                aggregateQuery.push(lookup_auth_member_following(follow_id));
+            }
+        
+            const result = await this.followModel.aggregate(aggregateQuery).exec();
+            assert.ok(result, Definer.follow_err3);
 
             return result;
         } catch (err) {
