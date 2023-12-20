@@ -158,8 +158,9 @@ class Follow {
                 { $unwind: "$subscriber_member_data" }
             ];
     
-            // following followed back to the subscriber
-            if (member && member._id === inquery.mb_id) {
+            // agar men o'zimning followerlarimni ko'rayotgan bo'lsam
+            if (member && member._id === inquery.mb_id) { 
+            // if(member) {} qilsak - boshqa userning pageida o'sha userning follower, followinglarini follow back qila oladi
                 aggregateQuery.push(lookup_auth_member_following(follow_id, 'follows'));
             }
         
