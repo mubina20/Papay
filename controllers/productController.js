@@ -47,14 +47,13 @@ productController.addNewProduct = async (req, res) => {
 
         assert.ok(req.files, Definer.general_err3);
 
-        const product = new Product();
         let data = req.body;
-
         data.product_images = req.files.map((ele) => {
-            return ele.path;
+            return ele.path.replace(/\\/g, '/');
         });
-        console.log("Controller DATA::::", data)
+        console.log("addNewProduct::::", data);
 
+        const product = new Product();
         const result = await product.addNewProductData(data, req.member);
 
         const html =`<script>
@@ -64,8 +63,8 @@ productController.addNewProduct = async (req, res) => {
         res.end(html);
 
     } catch(err) {
-        console.log(`ERROR: addNewProductga kirishda xatolik boldi! ${err.message}`);
-
+        console.log(`ERROR: Product yasashda xatolik bo'ldi! (addNewProduct)! ${err.message}`);
+        res.json({state: 'fail', message: "Product yasashda xatolik bo'ldi!"});
     }
 };
 
@@ -79,7 +78,6 @@ productController.updateChosenProduct = async (req, res) => {
         await res.json({state: 'muvaffaqiyatli', data: result});
     } catch(err) {
         console.log(`ERROR: Product o'zgartirishda xatolik boldi! ${err.message}`);
-
         res.json({state: 'fail', message: "Product o'zgartirishda xatolik bo'ldi! (updateChosenProduct)"});
     }
 };

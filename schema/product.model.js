@@ -66,7 +66,7 @@ const productSchema = new mongoose.Schema({
     },
 
     product_volume: {
-        type: Number,
+        type: String,
         default: 1,
         required: function() {
             return (this.product_collection === "drink");

@@ -11,7 +11,7 @@ restaurantController.getRestaurants = async (req, res) => {
 	try {
 		console.log('GET: Kimdir Restaurant pageda!');
 		const data = req.query;
-        console.log("QUERY Data:::", data);
+        // console.log("QUERY:::", data);
 
 		const restaurant = new Restaurant();
 		const result = await restaurant.getRestaurantsData(req.member, data);
@@ -27,7 +27,7 @@ restaurantController.getChosenRestaurant = async (req, res) => {
 	try {
 		console.log("GET: User bir restaurantni tanladi!");
 		const id = req.params.id;
-        console.log("ID:::", id);
+        // console.log("ID:::", id);
         
 		const restaurant = new Restaurant();
 		const result = await restaurant.getChosenRestaurantData(req.member, id);
