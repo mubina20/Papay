@@ -31,7 +31,7 @@ class Order {
                 delivery_cost,
                 mb_id
             );
-            console.log("ORDER_ID:::", order_id);
+            // console.log("ORDER_ID:::", order_id);
 
             // TODO: order items creation
 
@@ -70,7 +70,7 @@ class Order {
             });
 
             const results = await Promise.all(pro_list);
-            console.log("RESULT:::", results);
+            // console.log("RESULT:::", results);
             return true;
         } catch (err) {
             throw err;

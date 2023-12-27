@@ -207,7 +207,7 @@ restaurantController.getAllRestaurants = async (req, res) => {
 
 		const restaurant = new Restaurant();
 		const restaurants_data = await restaurant.getAllRestaurantsData();
-		console.log( "restaurants_data:::", restaurants_data );
+		// console.log( "restaurants_data:::", restaurants_data );
 
 		res.render('all-restaurant', { restaurants_data: restaurants_data });
 	} catch (err) {
@@ -220,11 +220,11 @@ restaurantController.getAllRestaurants = async (req, res) => {
 restaurantController.updateRestaurantByAdmin = async (req, res) => {
 	try {
 		console.log("GET: Admin restaurantni o'zgartirmoqda");
-        console.log("req.body::: ", req.body);
+        // console.log("req.body::: ", req.body);
 
 		const restaurant = new Restaurant();
 		const result = await restaurant.updateRestaurantByAdminData(req.body);
-        console.log("result::: ", result);
+        // console.log("result::: ", result);
 
 		await res.json({ state: 'muvaffaqiyatli', data: result });
 	} catch (err) {

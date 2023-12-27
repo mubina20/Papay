@@ -11,9 +11,8 @@ communityController.imageInsertion = async (req, res) => {
         assert.ok(req.file, Definer.general_err3);
         const image_url = req.file.path;
 
-        console.log("REQ.FILE", req.file);
-        console.log("image_URL", req.file.path);
-
+        // console.log("REQ.FILE", req.file);
+        // console.log("image_URL", req.file.path);
 
         res.json({state: 'Muvaffaqiyatli', data: image_url});
     } catch(err) {
@@ -25,7 +24,7 @@ communityController.imageInsertion = async (req, res) => {
 communityController.createArticle = async (req, res) => {
     try{
         console.log("POST: User article yasamoqda!");
-        console.log("req.BODY:::", req.body);
+        // console.log("req.BODY:::", req.body);
 
         const community = new Community();
         const result = await community.createArticleData(req.member, req.body);

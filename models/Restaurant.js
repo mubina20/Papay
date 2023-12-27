@@ -96,7 +96,6 @@ class Restaurant {
 					returnDocument: "after"
 				})
 				.exec();
-			console.log("REstaurant.jsdagi:::: resutl::::", result);
 			assert.ok(result, Definer.general_err1);
 			
 			return result;

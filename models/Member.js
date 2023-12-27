@@ -74,7 +74,7 @@ class Member {
         try{
             const auth_mb_id = shapeIntoMongooseObjectId(member?._id);
 			id = shapeIntoMongooseObjectId(id);
-            console.log("MEMBER:::", member);
+            // console.log("MEMBER:::", member);
 
             let aggregateQuery = [
 				{ $match: { _id: id, mb_status: 'ACTIVE' } }, 
