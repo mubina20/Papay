@@ -52,9 +52,8 @@ class Product {
 
 			const result = await this.productModel
 				.aggregate([ 
-                    { $match: { _id: id, product_status: 'PROCESS' } }
-
-                    // TODO: check auth member product liked
+                    { $match: { _id: id, product_status: 'PROCESS' } },
+                    lookup_auth_member_liked(auth_mb_id)
                 ])
 				.exec();
 
