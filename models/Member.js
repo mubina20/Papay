@@ -84,7 +84,6 @@ class Member {
             if (member) {
 				// Condition if not seen before
 				await this.viewChosenItemByMember(member, id, 'member');
-                // TODO: Check auth member product liked the chosen member
             
                 aggregateQuery.push(lookup_auth_member_liked(auth_mb_id));
 				aggregateQuery.push(lookup_auth_member_following(auth_mb_id, 'members'));
@@ -155,6 +154,34 @@ class Member {
             throw err;
         }
     };
+
+    async updateMemberData(id, data, image) {
+		try {
+			const mb_id = shapeIntoMongooseObjectId(id);
+
+			let params = {
+				mb_nick: data.mb_nick,
+				mb_phone: data.mb_phone,
+				mb_adress: data.mb_adress,
+				mb_description: data.mb_description,
+				mb_image: image ? image.path : null,
+			};
+
+			for (let prop in params) if (!params[prop]) delete params[prop];
+
+			const result = await this.memberModel
+			.findOneAndUpdate(
+				{_id: mb_id},
+				params,
+				{ new: true }
+			).exec();
+            
+			assert.ok(result, Definer.general_err1);
+			return result;
+		} catch(err) {
+			throw err;
+		}
+	};
 };
 
 module.exports = Member;

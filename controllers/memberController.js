@@ -130,6 +130,28 @@ memberController.likeMemberChosen = async (req, res) => {
 	}
 };
 
+memberController.updateMember = async (req, res) => {
+	try {
+		console.log("POST: User informationni o'zgartirmoqda");
+		console.log("req.body:::",req.body);
+		console.log("req.file:::", req.file);
+
+		assert.ok(req.member, Definer.article_err3);
+
+		const member = new Member();
+		const result = await member.updateMemberData(
+			req.member?._id, 
+			req.body, 
+			req.file,
+		);
+
+		res.json({ state: 'success', data: result });
+	} catch (err) {
+		console.log(`ERORR: User informationni o'zgartirishda xatolik bo'ldi! (updateMember), ${err.message}`);
+		res.json({ state: 'fail', message: "User informationni o'zgartirishda xatolik bo'ldi! (updateMember)" });
+	}
+};
+
 memberController.retrieveAuthMember = async (req, res, next) => {
 	try {
 		const token = req.cookies['access_token'];

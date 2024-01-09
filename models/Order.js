@@ -33,8 +33,6 @@ class Order {
             );
             // console.log("ORDER_ID:::", order_id);
 
-            // TODO: order items creation
-
             await this.recordOrderItemsData(order_id, data);
 
             return order_id;
