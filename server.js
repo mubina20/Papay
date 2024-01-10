@@ -34,10 +34,7 @@ mongoose.connect( // connect() - 3ta parameter qabul qiladi:
         console.log('MongoDB muvaffaqiyatli ulandi'); // muvaffaqiyatli ulanganini log qilsin
         
         // 2) Server ishga tushadi
-        const app = require('./app'); // app ham, databaseimiz muvaffaqiyatli ulangach require qilinsin
-
-        const server = http.createServer(app); // 'app.js'dagi hamma ishlarni shu yerga olib kelib - Serverni yasayapmiz.    Hamma requestlar shu yerga keladi
-        // createServer() --> method - bitta parameter qabul qiladi
+        const server = require('./app'); // app ham, databaseimiz muvaffaqiyatli ulangach require qilinsin
 
         // serverni ma'lum bir PORTga listen qildirishimiz kerak
         let PORT = process.env.PORT || 3000; // process.env - o'zini PORTini tekshirsin:

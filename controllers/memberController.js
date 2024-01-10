@@ -133,7 +133,7 @@ memberController.likeMemberChosen = async (req, res) => {
 memberController.updateMember = async (req, res) => {
 	try {
 		console.log("POST: User informationni o'zgartirmoqda");
-		// console.log("req.body:::",req.body);
+		console.log("req.body:::",req.body);
 		// console.log("req.file:::", req.file);
 		// console.log("mb_image:::", req.body.mb_image);
 
