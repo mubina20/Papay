@@ -106,11 +106,11 @@ class Member {
 			const view = new View(mb_id);
 			const isValid = await view.validateChosenTarget(view_ref_id, group_type);
 			assert.ok(isValid, Definer.general_err2);
-            console.log('isValid:::', isValid);
+            // console.log('isValid:::', isValid);
 
 			// logged user has seen target before
             const doesExist = await view.checkViewExistence(view_ref_id);
-			console.log('doesExist:::', doesExist);
+			// console.log('doesExist:::', doesExist);
 
             if (!doesExist) {
 				const result = await view.insertMemberView(view_ref_id, group_type);
@@ -162,20 +162,20 @@ class Member {
 			let params = {
 				mb_nick: data.mb_nick,
 				mb_phone: data.mb_phone,
-				mb_adress: data.mb_adress,
+				mb_address: data.mb_address,
 				mb_description: data.mb_description,
-				mb_image: image ? image.path : null,
+				mb_image: image ? image.path.replace(/\\/g, '/') : null,
 			};
 
-			for (let prop in params) if (!params[prop]) delete params[prop];
-
+            for (let prop in params) if (!params[prop]) delete params[prop];
+            
 			const result = await this.memberModel
 			.findOneAndUpdate(
 				{_id: mb_id},
 				params,
 				{ new: true }
 			).exec();
-            
+
 			assert.ok(result, Definer.general_err1);
 			return result;
 		} catch(err) {

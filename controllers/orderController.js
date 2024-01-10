@@ -27,7 +27,7 @@ orderController.getMyOrders = async (req, res) => {
 
         assert.ok(req.member, Definer.auth_err5);
         // console.log("MEMBER:::", req.member);
-        console.log("QUERY:::", req.query);
+        // console.log("QUERY:::", req.query);
 
         const order = new Order();
         const result = await order.getMyOrdersData(req.member, req.query);
@@ -42,7 +42,7 @@ orderController.getMyOrders = async (req, res) => {
 orderController.editChosenOrder = async (req, res) => {
     try{
         console.log("POST: User orderni o'zgartirmoqda!");
-        console.log("req.body:::", req.body);
+        // console.log("req.body:::", req.body);
 
         assert.ok(req.member, Definer.auth_err5);
 

@@ -8,7 +8,7 @@ const communityController = require("./controllers/communityController");
 const followController = require("./controllers/followController");
 
 const uploader_community = require('./utils/upload-multer')("community");
-const uploader_member = require('./utils/upload-multer')("member");
+const uploader_member = require('./utils/upload-multer')("members");
 
 
 /**************************************************************************

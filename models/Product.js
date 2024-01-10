@@ -31,7 +31,7 @@ class Product {
 				])
 				.exec();
 
-			console.log(result);
+			// console.log(result);
 
 			assert.ok(result, Definer.general_err1);
 			return result;

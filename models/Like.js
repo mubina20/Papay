@@ -51,7 +51,7 @@ class Like {
 					like_ref_id: like_ref_id,
 				})
 				.exec();
-            console.log("LIKE:::", like);
+            // console.log("LIKE:::", like);
 
 			return !!like;
         } catch(err) {

@@ -133,18 +133,18 @@ memberController.likeMemberChosen = async (req, res) => {
 memberController.updateMember = async (req, res) => {
 	try {
 		console.log("POST: User informationni o'zgartirmoqda");
-		console.log("req.body:::",req.body);
-		console.log("req.file:::", req.file);
+		// console.log("req.body:::",req.body);
+		// console.log("req.file:::", req.file);
+		// console.log("mb_image:::", req.body.mb_image);
 
-		assert.ok(req.member, Definer.article_err3);
-
+		assert.ok(req.member, Definer.auth_err3);
 		const member = new Member();
 		const result = await member.updateMemberData(
 			req.member?._id, 
 			req.body, 
-			req.file,
+			req.file
 		);
-
+		
 		res.json({ state: 'success', data: result });
 	} catch (err) {
 		console.log(`ERORR: User informationni o'zgartirishda xatolik bo'ldi! (updateMember), ${err.message}`);
